@@ -49,7 +49,7 @@
 @implementation XMLRPCParserTest
 
 - (void)setUp {
-    myTestCases = [[self testCases] retain];
+    myTestCases = [self testCases];
 }
 
 #pragma mark -
@@ -60,19 +60,18 @@
     
     while (testCaseName = [testCaseEnumerator nextObject]) {
         NSString *testCase = [[self unitTestBundle] pathForResource: testCaseName ofType: @"xml"];
-        NSData *testCaseData =[[[NSData alloc] initWithContentsOfFile: testCase] autorelease];
-        XMLRPCEventBasedParser *parser = [[[XMLRPCEventBasedParser alloc] initWithData: testCaseData] autorelease];
+        NSData *testCaseData =[[NSData alloc] initWithContentsOfFile: testCase];
+        XMLRPCEventBasedParser *parser = [[XMLRPCEventBasedParser alloc] initWithData: testCaseData];
         id testCaseResult = [myTestCases objectForKey: testCaseName];
         id parsedResult = [parser parse];
         
-        STAssertTrue([self parsedResult: parsedResult isEqualToTestCaseResult: testCaseResult], @"The test case failed: %@", testCaseName);
+        XCTAssertTrue([self parsedResult: parsedResult isEqualToTestCaseResult: testCaseResult], @"The test case failed: %@", testCaseName);
     }
 }
 
 #pragma mark -
 
 - (void)tearDown {
-    [myTestCases release];
 }
 
 @end
@@ -89,7 +88,7 @@
 
 - (NSDictionary *)testCases {
     NSString *file = [[self unitTestBundle] pathForResource: @"TestCases" ofType: @"plist"];
-    NSDictionary *testCases = [[[NSDictionary alloc] initWithContentsOfFile: file] autorelease];
+    NSDictionary *testCases = [[NSDictionary alloc] initWithContentsOfFile: file];
     
     return testCases;
 }

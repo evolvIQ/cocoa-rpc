@@ -10,3 +10,5 @@ classes/
 logs/
 .project
 .classpath
+xcuserdata
+xcshareddata

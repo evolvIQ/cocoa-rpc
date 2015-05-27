@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,7 +15,6 @@
 		075137FC0E429E560019E4F6 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 075137FA0E429E560019E4F6 /* XMLRPCConnectionManager.m */; };
 		0759A6F31143495E000DFE98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0759A6F11143495E000DFE98 /* InfoPlist.strings */; };
 		0799AF270F6724E300B71B22 /* XMLRPC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* XMLRPC.framework */; };
-		0799AF5E0F67266400B71B22 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0799AF5D0F67266400B71B22 /* SenTestingKit.framework */; };
 		07A0A9071016A51000CEE3C7 /* EmptyBooleanTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = 07A0A9021016A51000CEE3C7 /* EmptyBooleanTestCase.xml */; };
 		07A0A9081016A51000CEE3C7 /* EmptyDataTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = 07A0A9031016A51000CEE3C7 /* EmptyDataTestCase.xml */; };
 		07A0A9091016A51000CEE3C7 /* EmptyDoubleTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = 07A0A9041016A51000CEE3C7 /* EmptyDoubleTestCase.xml */; };
@@ -66,7 +65,7 @@
 		075137F90E429E560019E4F6 /* XMLRPCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCConnectionManager.h; sourceTree = "<group>"; };
 		075137FA0E429E560019E4F6 /* XMLRPCConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCConnectionManager.m; sourceTree = "<group>"; };
 		0759A6F21143495E000DFE98 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = Languages/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		0799AF030F6721FF00B71B22 /* XMLRPCUnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XMLRPCUnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0799AF030F6721FF00B71B22 /* XMLRPCUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XMLRPCUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0799AF040F6721FF00B71B22 /* XMLRPCUnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "XMLRPCUnitTests-Info.plist"; path = "Resources/Property Lists/XMLRPCUnitTests-Info.plist"; sourceTree = "<group>"; };
 		0799AF0A0F67227F00B71B22 /* XMLRPCUnitTests.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = XMLRPCUnitTests.xcconfig; path = Configurations/XMLRPCUnitTests.xcconfig; sourceTree = "<group>"; };
 		0799AF0B0F67227F00B71B22 /* XMLRPCUnitTestsDevelopment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = XMLRPCUnitTestsDevelopment.xcconfig; path = Configurations/XMLRPCUnitTestsDevelopment.xcconfig; sourceTree = "<group>"; };
@@ -75,7 +74,6 @@
 		0799AF100F6722D600B71B22 /* XMLRPCDevelopment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = XMLRPCDevelopment.xcconfig; path = Configurations/XMLRPCDevelopment.xcconfig; sourceTree = "<group>"; };
 		0799AF110F6722D600B71B22 /* XMLRPCRelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = XMLRPCRelease.xcconfig; path = Configurations/XMLRPCRelease.xcconfig; sourceTree = "<group>"; };
 		0799AF280F67254B00B71B22 /* XMLRPC-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "XMLRPC-Info.plist"; path = "Resources/Property Lists/XMLRPC-Info.plist"; sourceTree = "<group>"; };
-		0799AF5D0F67266400B71B22 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		07A0A9021016A51000CEE3C7 /* EmptyBooleanTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = EmptyBooleanTestCase.xml; path = "Resources/Test Cases/EmptyBooleanTestCase.xml"; sourceTree = "<group>"; };
 		07A0A9031016A51000CEE3C7 /* EmptyDataTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = EmptyDataTestCase.xml; path = "Resources/Test Cases/EmptyDataTestCase.xml"; sourceTree = "<group>"; };
 		07A0A9041016A51000CEE3C7 /* EmptyDoubleTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = EmptyDoubleTestCase.xml; path = "Resources/Test Cases/EmptyDoubleTestCase.xml"; sourceTree = "<group>"; };
@@ -115,7 +113,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				07E761001011788B00E9BDEE /* Cocoa.framework in Frameworks */,
-				0799AF5E0F67266400B71B22 /* SenTestingKit.framework in Frameworks */,
 				0799AF270F6724E300B71B22 /* XMLRPC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,7 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* XMLRPC.framework */,
-				0799AF030F6721FF00B71B22 /* XMLRPCUnitTests.octest */,
+				0799AF030F6721FF00B71B22 /* XMLRPCUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -277,7 +274,6 @@
 			isa = PBXGroup;
 			children = (
 				1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */,
-				0799AF5D0F67266400B71B22 /* SenTestingKit.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -342,8 +338,8 @@
 			);
 			name = XMLRPCUnitTests;
 			productName = XMLRPCUnitTests;
-			productReference = 0799AF030F6721FF00B71B22 /* XMLRPCUnitTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = 0799AF030F6721FF00B71B22 /* XMLRPCUnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		8DC2EF4F0486A6940098B216 /* XMLRPC */ = {
 			isa = PBXNativeTarget;
@@ -370,9 +366,17 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastTestingUpgradeCheck = 0630;
+				LastUpgradeCheck = 0630;
+			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "XMLRPC" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* XMLRPC */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -492,7 +496,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0799AF0B0F67227F00B71B22 /* XMLRPCUnitTestsDevelopment.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
@@ -505,7 +510,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0799AF0C0F67227F00B71B22 /* XMLRPCUnitTestsRelease.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
@@ -518,7 +524,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0799AF100F6722D600B71B22 /* XMLRPCDevelopment.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				VERSION_INFO_FILE = "";
 			};
 			name = Development;
@@ -527,7 +535,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0799AF110F6722D600B71B22 /* XMLRPCRelease.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				VERSION_INFO_FILE = "";
 			};
 			name = Release;
@@ -536,7 +546,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 07127C590F4266F4009C7476 /* CommonDevelopment.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 			};
 			name = Development;
 		};
@@ -544,7 +553,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 07127C5A0F4266F4009C7476 /* CommonRelease.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 			};
 			name = Release;
 		};

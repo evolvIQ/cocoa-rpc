@@ -130,11 +130,5 @@
 
 #pragma mark -
 
-- (void)dealloc {
-    [myRequest release];
-    [myXMLEncoder release];
-    
-    [super dealloc];
-}
 
 @end

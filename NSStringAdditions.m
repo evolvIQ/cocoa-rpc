@@ -38,7 +38,7 @@ static char base64EncodingTable[64] = {
     
     CFRelease(UUIDReference);
     
-    return [NSMakeCollectable(temporaryUUIDString) autorelease];
+    return CFBridgingRelease(temporaryUUIDString);
 }
 
 + (NSString *)base64StringFromData: (NSData *)data length: (int)length {

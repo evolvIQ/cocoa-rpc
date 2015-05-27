@@ -98,24 +98,18 @@
 #pragma mark -
 
 - (void)setMethod: (NSString *)method withParameters: (NSArray *)parameters {
-    if (myMethod)    {
-        [myMethod release];
-    }
     
     if (!method) {
         myMethod = nil;
     } else {
-        myMethod = [method retain];
+        myMethod = method;
     }
     
-    if (myParameters) {
-        [myParameters release];
-    }
     
     if (!parameters) {
         myParameters = nil;
     } else {
-        myParameters = [parameters retain];
+        myParameters = parameters;
     }
 }
 
@@ -131,12 +125,6 @@
 
 #pragma mark -
 
-- (void)dealloc {
-    [myMethod release];
-    [myParameters release];
-    
-    [super dealloc];
-}
 
 @end
 
@@ -165,7 +153,7 @@
         return [self encodeArray: object];
     } else if ([object isKindOfClass: [NSDictionary class]]) {
         return [self encodeDictionary: object];
-    } else if (((CFBooleanRef)object == kCFBooleanTrue) || ((CFBooleanRef)object == kCFBooleanFalse)) {
+    } else if (((__bridge CFBooleanRef)object == kCFBooleanTrue) || ((__bridge CFBooleanRef)object == kCFBooleanFalse)) {
         return [self encodeBoolean: (CFBooleanRef)object];
     } else if ([object isKindOfClass: [NSNumber class]]) {
         return [self encodeNumber: object];
@@ -246,7 +234,8 @@
 - (NSString *)encodeDate: (NSDate *)date {
     unsigned components = kCFCalendarUnitYear | kCFCalendarUnitMonth | kCFCalendarUnitDay | kCFCalendarUnitHour | kCFCalendarUnitMinute | kCFCalendarUnitSecond;
     NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components: components fromDate: date];
-    NSString *buffer = [NSString stringWithFormat: @"%.4d%.2d%.2dT%.2d:%.2d:%.2d", [dateComponents year], [dateComponents month], [dateComponents day], [dateComponents hour], [dateComponents minute], [dateComponents second], nil];
+    [dateComponents setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"] ];
+    NSString *buffer = [NSString stringWithFormat: @"%.4ld%.2ld%.2ldT%.2ld:%.2ld:%.2ld", (long)[dateComponents year], (long)[dateComponents month], (long)[dateComponents day], (long)[dateComponents hour], (long)[dateComponents minute], (long)[dateComponents second], nil];
     
     return [self valueTag: @"dateTime.iso8601" value: buffer];
 }

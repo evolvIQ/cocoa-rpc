@@ -70,9 +70,7 @@
 #pragma mark -
 
 - (void)setParent: (XMLRPCEventBasedParserDelegate *)parent {
-    [parent retain];
     
-    [myParent release];
     
     myParent = parent;
 }
@@ -94,9 +92,7 @@
 #pragma mark -
 
 - (void)setElementKey: (NSString *)elementKey {
-    [elementKey retain];
     
-    [myElementKey release];
     
     myElementKey = elementKey;
 }
@@ -108,9 +104,7 @@
 #pragma mark -
 
 - (void)setElementValue: (id)elementValue {
-    [elementValue retain];
     
-    [myElementValue release];
     
     myElementValue = elementValue;
 }
@@ -121,13 +115,6 @@
 
 #pragma mark -
 
-- (void)dealloc {
-    [myChildren release];
-    [myElementKey release];
-    [myElementValue release];
-    
-    [super dealloc];
-}
 
 @end
 
@@ -149,7 +136,6 @@
         
         [parser setDelegate: parserDelegate];
         
-        [parserDelegate release];
         
         return;
     }
@@ -159,7 +145,6 @@
         
         [self setElementValue: array];
         
-        [array release];
         
         [self setElementType: XMLRPCElementTypeArray];
     } else if ([element isEqualToString: @"struct"]) {
@@ -167,7 +152,6 @@
         
         [self setElementValue: dictionary];
         
-        [dictionary release];
         
         [self setElementType: XMLRPCElementTypeDictionary];
     } else if ([element isEqualToString: @"int"] || [element isEqualToString: @"i4"]) {
@@ -192,7 +176,6 @@
         if ((myElementType != XMLRPCElementTypeArray) && ![self isDictionaryElementType: myElementType]) {
             elementValue = [self parseString: myElementValue];
             
-            [myElementValue release];
             
             myElementValue = nil;
         }
@@ -201,38 +184,32 @@
             case XMLRPCElementTypeInteger:
                 myElementValue = [self parseInteger: elementValue];
                 
-                [myElementValue retain];
                 
                 break;
             case XMLRPCElementTypeDouble:
                 myElementValue = [self parseDouble: elementValue];
                 
-                [myElementValue retain];
                 
                 break;
             case XMLRPCElementTypeBoolean:
                 myElementValue = [self parseBoolean: elementValue];
                 
-                [myElementValue retain];
                 
                 break;
             case XMLRPCElementTypeString:
             case XMLRPCElementTypeName:
                 myElementValue = elementValue;
                 
-                [myElementValue retain];
                 
                 break;
             case XMLRPCElementTypeDate:
                 myElementValue = [self parseDate: elementValue];
                 
-                [myElementValue retain];
                 
                 break;
             case XMLRPCElementTypeData:
                 myElementValue = [self parseData: elementValue];
                 
-                [myElementValue retain];
                 
                 break;
             default:
@@ -309,12 +286,12 @@
 - (NSDate *)parseDateString: (NSString *)dateString withFormat: (NSString *)format {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSDate *result = nil;
-    
+
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     [dateFormatter setDateFormat: format];
     
     result = [dateFormatter dateFromString: dateString];
     
-    [dateFormatter release];
     
     return result;
 }
@@ -343,12 +320,14 @@
 
 - (NSDate *)parseDate: (NSString *)value {
     NSDate *result = nil;
+
+    result = [self parseDateString: value withFormat: @"yyyyMMdd'T'HH:mm:ssZ"];
+    if(result) return result;
     
     result = [self parseDateString: value withFormat: @"yyyyMMdd'T'HH:mm:ss"];
-    
-    if (!result) {
-        result = [self parseDateString: value withFormat: @"yyyy'-'MM'-'dd'T'HH:mm:ss"];
-    }
+    if(result) return result;
+
+    result = [self parseDateString: value withFormat: @"yyyy'-'MM'-'dd'T'HH:mm:ss"];
     
     return result;
 }
