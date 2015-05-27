@@ -22,10 +22,5 @@
 
 #import <XCTest/XCTest.h>
 
-@interface XMLRPCParserTest : XCTestCase {
-    NSDictionary *myTestCases;
-}
-
-- (void)testEventBasedParser;
-
+@interface XMLRPCParserTest : XCTestCase
 @end

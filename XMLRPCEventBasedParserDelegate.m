@@ -37,6 +37,8 @@
 
 #pragma mark -
 
+- (id)parseNil: (NSString *)value;
+
 - (NSNumber *)parseInteger: (NSString *)value;
 
 - (NSNumber *)parseDouble: (NSString *)value;
@@ -166,6 +168,8 @@
         [self setElementType: XMLRPCElementTypeDate];
     } else if ([element isEqualToString: @"base64"]) {
         [self setElementType: XMLRPCElementTypeData];
+    } else if ([element isEqualToString: @"nil"]) {
+        [self setElementType: XMLRPCElementTypeNil];
     }
 }
 
@@ -211,6 +215,11 @@
                 myElementValue = [self parseData: elementValue];
                 
                 
+                break;
+            case XMLRPCElementTypeNil:
+                myElementValue = [self parseNil: elementValue];
+
+
                 break;
             default:
                 break;
@@ -297,6 +306,10 @@
 }
 
 #pragma mark -
+
+- (id)parseNil: (NSString *)value {
+    return [NSNull null];
+}
 
 - (NSNumber *)parseInteger: (NSString *)value {
     return [NSNumber numberWithInteger: [value integerValue]];

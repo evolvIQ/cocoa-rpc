@@ -32,7 +32,9 @@ typedef enum {
     XMLRPCElementTypeBoolean,
     XMLRPCElementTypeString,
     XMLRPCElementTypeDate,
-    XMLRPCElementTypeData
+    XMLRPCElementTypeData,
+    // Extensions
+    XMLRPCElementTypeNil
 } XMLRPCElementType;
 
 #pragma mark -

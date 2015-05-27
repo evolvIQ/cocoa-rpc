@@ -36,12 +36,12 @@
 		07B0C6170E33A672006453B4 /* XMLRPC.pch in Headers */ = {isa = PBXBuildFile; fileRef = 07B0C6160E33A672006453B4 /* XMLRPC.pch */; };
 		07B52BE7101004670015AD8B /* SimpleArrayTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = 07B52BE5101004670015AD8B /* SimpleArrayTestCase.xml */; };
 		07B52BE8101004670015AD8B /* SimpleStructTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = 07B52BE6101004670015AD8B /* SimpleStructTestCase.xml */; };
-		07B52BEA101004810015AD8B /* TestCases.plist in Resources */ = {isa = PBXBuildFile; fileRef = 07B52BE9101004810015AD8B /* TestCases.plist */; };
 		07B52C03101008670015AD8B /* XMLRPCParserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B52C02101008670015AD8B /* XMLRPCParserTest.m */; };
 		07E761001011788B00E9BDEE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		07EF453B0E721A5D009F2708 /* XMLRPCEventBasedParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 07EF45390E721A5D009F2708 /* XMLRPCEventBasedParser.h */; };
 		07EF453C0E721A5D009F2708 /* XMLRPCEventBasedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 07EF453A0E721A5D009F2708 /* XMLRPCEventBasedParser.m */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
+		FF6EBF531B162F8E0016A891 /* ExtensionsTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = FF6EBF511B162F870016A891 /* ExtensionsTestCase.xml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,7 +95,6 @@
 		07B0C6160E33A672006453B4 /* XMLRPC.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPC.pch; sourceTree = "<group>"; };
 		07B52BE5101004670015AD8B /* SimpleArrayTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = SimpleArrayTestCase.xml; path = "Resources/Test Cases/SimpleArrayTestCase.xml"; sourceTree = "<group>"; };
 		07B52BE6101004670015AD8B /* SimpleStructTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = SimpleStructTestCase.xml; path = "Resources/Test Cases/SimpleStructTestCase.xml"; sourceTree = "<group>"; };
-		07B52BE9101004810015AD8B /* TestCases.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = TestCases.plist; path = "Resources/Property Lists/TestCases.plist"; sourceTree = "<group>"; };
 		07B52C01101008670015AD8B /* XMLRPCParserTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLRPCParserTest.h; path = "Unit Tests/XMLRPCParserTest.h"; sourceTree = "<group>"; };
 		07B52C02101008670015AD8B /* XMLRPCParserTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XMLRPCParserTest.m; path = "Unit Tests/XMLRPCParserTest.m"; sourceTree = "<group>"; };
 		07EF45390E721A5D009F2708 /* XMLRPCEventBasedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCEventBasedParser.h; sourceTree = "<group>"; };
@@ -105,6 +104,7 @@
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		8DC2EF5B0486A6940098B216 /* XMLRPC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XMLRPC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		FF6EBF511B162F870016A891 /* ExtensionsTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = ExtensionsTestCase.xml; path = "Resources/Test Cases/ExtensionsTestCase.xml"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,7 +172,6 @@
 		074E8A220F6D8D8300BE0B22 /* Property Lists */ = {
 			isa = PBXGroup;
 			children = (
-				07B52BE9101004810015AD8B /* TestCases.plist */,
 				0799AF280F67254B00B71B22 /* XMLRPC-Info.plist */,
 				0799AF040F6721FF00B71B22 /* XMLRPCUnitTests-Info.plist */,
 			);
@@ -202,6 +201,7 @@
 		07B52BE4101004270015AD8B /* Test Cases */ = {
 			isa = PBXGroup;
 			children = (
+				FF6EBF511B162F870016A891 /* ExtensionsTestCase.xml */,
 				07075BAD10C5FE3800589A27 /* AlternativeDateFormatsTestCase.xml */,
 				07A0A9021016A51000CEE3C7 /* EmptyBooleanTestCase.xml */,
 				07A0A9031016A51000CEE3C7 /* EmptyDataTestCase.xml */,
@@ -396,12 +396,12 @@
 				07075BAE10C5FE3800589A27 /* AlternativeDateFormatsTestCase.xml in Resources */,
 				07A0A9071016A51000CEE3C7 /* EmptyBooleanTestCase.xml in Resources */,
 				07A0A9081016A51000CEE3C7 /* EmptyDataTestCase.xml in Resources */,
+				FF6EBF531B162F8E0016A891 /* ExtensionsTestCase.xml in Resources */,
 				07A0A9091016A51000CEE3C7 /* EmptyDoubleTestCase.xml in Resources */,
 				07A0A90A1016A51000CEE3C7 /* EmptyIntegerTestCase.xml in Resources */,
 				07A0A90B1016A51000CEE3C7 /* EmptyStringTestCase.xml in Resources */,
 				07B52BE7101004670015AD8B /* SimpleArrayTestCase.xml in Resources */,
 				07B52BE8101004670015AD8B /* SimpleStructTestCase.xml in Resources */,
-				07B52BEA101004810015AD8B /* TestCases.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
