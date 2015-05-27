@@ -1,29 +1,8 @@
-// 
-// Copyright (c) 2010 Eric Czarny <eczarny@gmail.com>
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of  this  software  and  associated documentation files (the "Software"), to
-// deal  in  the Software without restriction, including without limitation the
-// rights  to  use,  copy,  modify,  merge,  publish,  distribute,  sublicense,
-// and/or sell copies  of  the  Software,  and  to  permit  persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-// 
-// The  above  copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-// 
-// THE  SOFTWARE  IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED,  INCLUDING  BUT  NOT  LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS  FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS  OR  COPYRIGHT  HOLDERS  BE  LIABLE  FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY,  WHETHER  IN  AN  ACTION  OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-// 
-
-#import "XMLRPCEncoder.h"
+#import "XMLRPCDefaultEncoder.h"
 #import "NSStringAdditions.h"
+#import "NSData+Base64.h"
 
-@interface XMLRPCEncoder (XMLRPCEncoderPrivate)
+@interface XMLRPCDefaultEncoder (XMLRPCEncoderPrivate)
 
 - (NSString *)valueTag: (NSString *)tag value: (NSString *)value;
 
@@ -57,7 +36,7 @@
 
 #pragma mark -
 
-@implementation XMLRPCEncoder
+@implementation XMLRPCDefaultEncoder
 
 - (id)init {
     if (self = [super init]) {
@@ -81,7 +60,7 @@
         NSEnumerator *enumerator = [myParameters objectEnumerator];
         id parameter = nil;
         
-        while (parameter = [enumerator nextObject]) {
+        while ((parameter = [enumerator nextObject])) {
             [buffer appendString: @"<param>"];
             [buffer appendString: [self encodeObject: parameter]];
             [buffer appendString: @"</param>"];
@@ -98,6 +77,7 @@
 #pragma mark -
 
 - (void)setMethod: (NSString *)method withParameters: (NSArray *)parameters {
+#if ! __has_feature(objc_arc)
     
     if (!method) {
         myMethod = nil;
@@ -111,6 +91,10 @@
     } else {
         myParameters = parameters;
     }
+#else
+	myMethod = method;
+	myParameters = parameters;
+#endif
 }
 
 #pragma mark -
@@ -125,12 +109,14 @@
 
 #pragma mark -
 
+#if ! __has_feature(objc_arc)
+#endif
 
 @end
 
 #pragma mark -
 
-@implementation XMLRPCEncoder (XMLRPCEncoderPrivate)
+@implementation XMLRPCDefaultEncoder (XMLRPCEncoderPrivate)
 
 - (NSString *)valueTag: (NSString *)tag value: (NSString *)value {
     return [NSString stringWithFormat: @"<value><%@>%@</%@></value>", tag, value, tag];
@@ -194,11 +180,19 @@
     [buffer appendString: @"<value><struct>"];
     
     NSString *key = nil;
+    NSObject *val;
     
     while (key = [enumerator nextObject]) {
         [buffer appendString: @"<member>"];
         [buffer appendFormat: @"<name>%@</name>", [self encodeString: key omitTag: YES]];
-        [buffer appendString: [self encodeObject: [dictionary objectForKey: key]]];
+
+        val = [dictionary objectForKey: key];
+        if (val != [NSNull null]) {
+            [buffer appendString: [self encodeObject: val]];
+        } else {
+            [buffer appendString:@"<value><nil/></value>"];
+        }
+
         [buffer appendString: @"</member>"];
     }
     
@@ -241,9 +235,7 @@
 }
 
 - (NSString *)encodeData: (NSData *)data {
-    NSString *buffer = [NSString base64StringFromData: data length: [data length]];
-
-    return [self valueTag: @"base64" value: buffer];
+    return [self valueTag: @"base64" value: [data base64EncodedString]];
 }
 
 @end

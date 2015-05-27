@@ -1,42 +1,37 @@
-// 
-// Copyright (c) 2010 Eric Czarny <eczarny@gmail.com>
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of  this  software  and  associated documentation files (the "Software"), to
-// deal  in  the Software without restriction, including without limitation the
-// rights  to  use,  copy,  modify,  merge,  publish,  distribute,  sublicense,
-// and/or sell copies  of  the  Software,  and  to  permit  persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-// 
-// The  above  copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-// 
-// THE  SOFTWARE  IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED,  INCLUDING  BUT  NOT  LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS  FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS  OR  COPYRIGHT  HOLDERS  BE  LIABLE  FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY,  WHETHER  IN  AN  ACTION  OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-// 
-
 #import "XMLRPCRequest.h"
 #import "XMLRPCEncoder.h"
+#import "XMLRPCDefaultEncoder.h"
+
+static const NSTimeInterval DEFAULT_TIMEOUT = 240;
 
 @implementation XMLRPCRequest
 
-- (id)initWithURL: (NSURL *)URL {
-    if (self = [super init]) {
+- (id)initWithURL: (NSURL *)URL withEncoder: (id<XMLRPCEncoder>)encoder {
+    self = [super init];
+    if (self) {
         if (URL) {
             myRequest = [[NSMutableURLRequest alloc] initWithURL: URL];
         } else {
             myRequest = [[NSMutableURLRequest alloc] init];
         }
         
-        myXMLEncoder = [[XMLRPCEncoder alloc] init];
+        myXMLEncoder = encoder;
+#if ! __has_feature(objc_arc)
+        [myXMLEncoder retain];
+#endif
+
+        myTimeout = DEFAULT_TIMEOUT;
     }
     
     return self;
+}
+
+- (id)initWithURL: (NSURL *)URL {
+#if ! __has_feature(objc_arc)
+    return [self initWithURL:URL withEncoder:[[[XMLRPCDefaultEncoder alloc] init] autorelease]];
+#else
+    return [self initWithURL:URL withEncoder:[[XMLRPCDefaultEncoder alloc] init]];
+#endif
 }
 
 #pragma mark -
@@ -65,6 +60,20 @@
 
 #pragma mark -
 
+- (void)setEncoder:(id<XMLRPCEncoder>)encoder {
+    NSString *method = [myXMLEncoder method];
+    NSArray *parameters = [myXMLEncoder parameters];
+#if ! __has_feature(objc_arc)
+    [myXMLEncoder release];
+    
+    myXMLEncoder = [encoder retain];
+#else
+    myXMLEncoder = encoder;
+#endif
+    
+    [myXMLEncoder setMethod: method withParameters: parameters];
+}
+
 - (void)setMethod: (NSString *)method {
     [myXMLEncoder setMethod: method withParameters: nil];
 }
@@ -83,6 +92,11 @@
     [myXMLEncoder setMethod: method withParameters: parameters];
 }
 
+- (void)setTimeoutInterval: (NSTimeInterval)timeout
+{
+    myTimeout = timeout;
+}
+
 #pragma mark -
 
 - (NSString *)method {
@@ -91,6 +105,11 @@
 
 - (NSArray *)parameters {
     return [myXMLEncoder parameters];
+}
+
+- (NSTimeInterval)timeout
+{
+    return myTimeout;
 }
 
 #pragma mark -
@@ -103,7 +122,7 @@
 
 - (NSURLRequest *)request {
     NSData *content = [[self body] dataUsingEncoding: NSUTF8StringEncoding];
-    NSNumber *contentLength = [NSNumber numberWithInt: [content length]];
+    NSNumber *contentLength = [NSNumber numberWithUnsignedInteger:[content length]];
     
     if (!myRequest) {
         return nil;
@@ -123,6 +142,20 @@
         [myRequest setValue: [contentLength stringValue] forHTTPHeaderField: @"Content-Length"];
     }
     
+    if (![myRequest valueForHTTPHeaderField: @"Accept"]) {
+        [myRequest addValue: @"text/xml" forHTTPHeaderField: @"Accept"];
+    } else {
+        [myRequest setValue: @"text/xml" forHTTPHeaderField: @"Accept"];
+    }
+    
+    if (![self userAgent]) {
+      NSString *userAgent = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
+        
+      if (userAgent) {
+        [self setUserAgent: userAgent];
+      }
+    }
+    
     [myRequest setHTTPBody: content];
     
     return (NSURLRequest *)myRequest;
@@ -130,5 +163,27 @@
 
 #pragma mark -
 
+- (void)setValue: (NSString *)value forHTTPHeaderField: (NSString *)header {
+    [myRequest setValue: value forHTTPHeaderField: header];
+}
+#pragma mark -
+
+- (id) extra {
+    return extra;
+}
+
+- (void) setExtra:(id) extraObject {
+#if ! __has_feature(objc_arc)
+    [extra release];
+    extra = [extraObject retain];
+#else
+    extra = extraObject;
+#endif
+}
+
+#pragma mark -
+
+#if ! __has_feature(objc_arc)
+#endif
 
 @end

@@ -1,27 +1,5 @@
-// 
-// Copyright (c) 2010 Eric Czarny <eczarny@gmail.com>
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of  this  software  and  associated documentation files (the "Software"), to
-// deal  in  the Software without restriction, including without limitation the
-// rights  to  use,  copy,  modify,  merge,  publish,  distribute,  sublicense,
-// and/or sell copies  of  the  Software,  and  to  permit  persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-// 
-// The  above  copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-// 
-// THE  SOFTWARE  IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED,  INCLUDING  BUT  NOT  LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS  FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS  OR  COPYRIGHT  HOLDERS  BE  LIABLE  FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY,  WHETHER  IN  AN  ACTION  OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-// 
-
 #import "XMLRPCEventBasedParserDelegate.h"
-#import "NSDataAdditions.h"
+#import "NSData+Base64.h"
 
 @interface XMLRPCEventBasedParserDelegate (XMLRPCEventBasedParserDelegatePrivate)
 
@@ -60,7 +38,7 @@
 - (id)initWithParent: (XMLRPCEventBasedParserDelegate *)parent {
     if (self = [super init]) {
         myParent = parent;
-        myChildren = [[NSMutableArray alloc] initWithCapacity: 1];
+        myChildren = [[NSMutableSet alloc] initWithCapacity: 1];
         myElementType = XMLRPCElementTypeString;
         myElementKey = nil;
         myElementValue = [[NSMutableString alloc] init];
@@ -72,7 +50,6 @@
 #pragma mark -
 
 - (void)setParent: (XMLRPCEventBasedParserDelegate *)parent {
-    
     
     myParent = parent;
 }
@@ -106,7 +83,6 @@
 #pragma mark -
 
 - (void)setElementValue: (id)elementValue {
-    
     
     myElementValue = elementValue;
 }
@@ -225,11 +201,23 @@
                 break;
         }
         
-        if (myParent) {
+        if (myParent && myElementValue) {
             [self addElementValueToParent];
         }
         
         [parser setDelegate: myParent];
+
+        if (myParent) {
+            XMLRPCEventBasedParserDelegate *parent = myParent;
+
+            // Set it to nil explicitly since it's not __weak but __unsafe_unretained.
+            // We're doing it here because if we'll do it after removal from myChildren
+            // self can already be deallocated, and accessing field of deallocated object
+            // causes memory corruption.
+            myParent = nil;
+
+            [parent->myChildren removeObject: self];
+        }
     }
 }
 
@@ -275,7 +263,7 @@
             break;
         case XMLRPCElementTypeDictionary:
             [parentElementValue setObject: myElementValue forKey: myElementKey];
-            
+
             break;
         case XMLRPCElementTypeMember:
             if (myElementType == XMLRPCElementTypeName) {
@@ -341,12 +329,16 @@
     if(result) return result;
 
     result = [self parseDateString: value withFormat: @"yyyy'-'MM'-'dd'T'HH:mm:ss"];
-    
+
+    if (!result) {
+        result = (NSDate *)[NSNull null];
+    }
+
     return result;
 }
 
 - (NSData *)parseData: (NSString *)value {
-    return [NSData base64DataFromString: value];
+    return [NSData dataFromBase64String: value];
 }
 
 @end

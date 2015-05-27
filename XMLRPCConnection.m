@@ -1,36 +1,18 @@
-// 
-// Copyright (c) 2010 Eric Czarny <eczarny@gmail.com>
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of  this  software  and  associated documentation files (the "Software"), to
-// deal  in  the Software without restriction, including without limitation the
-// rights  to  use,  copy,  modify,  merge,  publish,  distribute,  sublicense,
-// and/or sell copies  of  the  Software,  and  to  permit  persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-// 
-// The  above  copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-// 
-// THE  SOFTWARE  IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED,  INCLUDING  BUT  NOT  LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS  FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS  OR  COPYRIGHT  HOLDERS  BE  LIABLE  FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY,  WHETHER  IN  AN  ACTION  OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-// 
-
 #import "XMLRPCConnection.h"
 #import "XMLRPCConnectionManager.h"
 #import "XMLRPCRequest.h"
 #import "XMLRPCResponse.h"
 #import "NSStringAdditions.h"
 
+static NSOperationQueue *parsingQueue;
+
 @interface XMLRPCConnection (XMLRPCConnectionPrivate)
 
 - (void)connection: (NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
 
 - (void)connection: (NSURLConnection *)connection didReceiveData: (NSData *)data;
+
+- (void)connection: (NSURLConnection *)connection didSendBodyData: (NSInteger)bytesWritten totalBytesWritten: (NSInteger)totalBytesWritten totalBytesExpectedToWrite: (NSInteger)totalBytesExpectedToWrite;
 
 - (void)connection: (NSURLConnection *)connection didFailWithError: (NSError *)error;
 
@@ -43,6 +25,15 @@
 - (void)connection: (NSURLConnection *)connection didCancelAuthenticationChallenge: (NSURLAuthenticationChallenge *)challenge;
 
 - (void)connectionDidFinishLoading: (NSURLConnection *)connection;
+
+#pragma mark -
+
+- (void)timeoutExpired;
+- (void)invalidateTimer;
+
+#pragma mark -
+
++ (NSOperationQueue *)parsingQueue;
 
 @end
 
@@ -57,12 +48,17 @@
         myIdentifier = [NSString stringByGeneratingUUID];
         myData = [[NSMutableData alloc] init];
         
-        myConnection = [[NSURLConnection alloc] initWithRequest: [request request] delegate: self];
+        myConnection = [[NSURLConnection alloc] initWithRequest: [request request] delegate: self startImmediately:NO];
+        [myConnection scheduleInRunLoop:[NSRunLoop mainRunLoop]
+                                forMode:NSDefaultRunLoopMode];
+        [myConnection start];
         
         myDelegate = delegate;
         
         if (myConnection) {
             NSLog(@"The connection, %@, has been established!", myIdentifier);
+
+            [self performSelector:@selector(timeoutExpired) withObject:nil afterDelay:[myRequest timeout]];
         } else {
             NSLog(@"The connection, %@, could not be established!", myIdentifier);
             
@@ -77,10 +73,15 @@
 #pragma mark -
 
 + (XMLRPCResponse *)sendSynchronousXMLRPCRequest: (XMLRPCRequest *)request error: (NSError **)error {
-    NSData *data = [NSURLConnection sendSynchronousRequest: [request request] returningResponse: nil error: error];
+    NSHTTPURLResponse *response = nil;
+    NSData *data = [NSURLConnection sendSynchronousRequest: [request request] returningResponse: &response error: error];
     
-    if (data) {
-        return [[XMLRPCResponse alloc] initWithData: data];
+    if (response) {
+        NSInteger statusCode = [response statusCode];
+        
+        if ((statusCode < 400) && data) {
+            return [[XMLRPCResponse alloc] initWithData: data];
+        }
     }
     
     return nil;
@@ -102,6 +103,8 @@
 
 - (void)cancel {
     [myConnection cancel];
+
+    [self invalidateTimer];
 }
 
 #pragma mark -
@@ -115,7 +118,7 @@
 
 - (void)connection: (NSURLConnection *)connection didReceiveResponse: (NSURLResponse *)response {
     if([response respondsToSelector: @selector(statusCode)]) {
-        int statusCode = [(NSHTTPURLResponse *)response statusCode];
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         
         if(statusCode >= 400) {
             NSError *error = [NSError errorWithDomain: @"HTTP" code: statusCode userInfo: nil];
@@ -133,11 +136,21 @@
     [myData appendData: data];
 }
 
+- (void)connection: (NSURLConnection *)connection didSendBodyData: (NSInteger)bytesWritten totalBytesWritten: (NSInteger)totalBytesWritten totalBytesExpectedToWrite: (NSInteger)totalBytesExpectedToWrite {
+    if ([myDelegate respondsToSelector: @selector(request:didSendBodyData:)]) {
+        float percent = totalBytesWritten / (float)totalBytesExpectedToWrite;
+        
+        [myDelegate request:myRequest didSendBodyData:percent];
+    }
+}
+
 - (void)connection: (NSURLConnection *)connection didFailWithError: (NSError *)error {
     XMLRPCRequest *request = myRequest;
     
     NSLog(@"The connection, %@, failed with the following error: %@", myIdentifier, [error localizedDescription]);
-    
+
+    [self invalidateTimer];
+
     [myDelegate request: request didFailWithError: error];
     
     [myManager closeConnectionForIdentifier: myIdentifier];
@@ -158,14 +171,56 @@
 }
 
 - (void)connectionDidFinishLoading: (NSURLConnection *)connection {
+    [self invalidateTimer];
     if (myData && ([myData length] > 0)) {
-        XMLRPCResponse *response = [[XMLRPCResponse alloc] initWithData: myData];
-        XMLRPCRequest *request = myRequest;
+        NSBlockOperation *parsingOperation;
+
+        parsingOperation = [NSBlockOperation blockOperationWithBlock:^{
+            XMLRPCResponse *response = [[XMLRPCResponse alloc] initWithData: myData];
+            XMLRPCRequest *request = myRequest;
+
+            [[NSOperationQueue mainQueue] addOperation: [NSBlockOperation blockOperationWithBlock:^{
+                [myDelegate request: request didReceiveResponse: response];
+
+                [myManager closeConnectionForIdentifier: myIdentifier];
+            }]];
+        }];
         
-        [myDelegate request: request didReceiveResponse: response];
+        [[XMLRPCConnection parsingQueue] addOperation: parsingOperation];
+    }
+    else {
+        [myManager closeConnectionForIdentifier: myIdentifier];
+    }
+}
+
+#pragma mark -
+- (void)timeoutExpired
+{
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [myRequest URL], NSURLErrorFailingURLErrorKey,
+                              [[myRequest URL] absoluteString], NSURLErrorFailingURLStringErrorKey,
+                              //TODO not good to use hardcoded value for localized description
+                              @"The request timed out.", NSLocalizedDescriptionKey,
+                              nil];
+
+    NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorTimedOut userInfo:userInfo];
+
+    [self connection:myConnection didFailWithError:error];
+}
+
+- (void)invalidateTimer
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(timeoutExpired) object:nil];
+}
+
+#pragma mark -
+
++ (NSOperationQueue *)parsingQueue {
+    if (parsingQueue == nil) {
+        parsingQueue = [[NSOperationQueue alloc] init];
     }
     
-    [myManager closeConnectionForIdentifier: myIdentifier];
+    return parsingQueue;
 }
 
 @end
