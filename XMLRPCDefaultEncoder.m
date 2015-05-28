@@ -77,24 +77,8 @@
 #pragma mark -
 
 - (void)setMethod: (NSString *)method withParameters: (NSArray *)parameters {
-#if ! __has_feature(objc_arc)
-    
-    if (!method) {
-        myMethod = nil;
-    } else {
-        myMethod = method;
-    }
-    
-    
-    if (!parameters) {
-        myParameters = nil;
-    } else {
-        myParameters = parameters;
-    }
-#else
 	myMethod = method;
 	myParameters = parameters;
-#endif
 }
 
 #pragma mark -
@@ -108,9 +92,6 @@
 }
 
 #pragma mark -
-
-#if ! __has_feature(objc_arc)
-#endif
 
 @end
 

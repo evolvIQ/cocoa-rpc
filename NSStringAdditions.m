@@ -7,11 +7,7 @@
     CFStringRef temporaryUUIDString = CFUUIDCreateString(nil, UUIDReference);
     
     CFRelease(UUIDReference);
-#if ! __has_feature(objc_arc)
-    return CFBridgingRelease(temporaryUUIDString);
-#else
     return (__bridge_transfer NSString*)temporaryUUIDString;
-#endif
 }
 
 #pragma mark -

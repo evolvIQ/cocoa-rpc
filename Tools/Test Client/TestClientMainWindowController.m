@@ -31,7 +31,7 @@ static TestClientMainWindowController *sharedInstance = nil;
 + (TestClientMainWindowController *)sharedController {
     @synchronized(self) {
         if (!sharedInstance) {
-            [[self alloc] init];
+            sharedInstance = [[self alloc] init];
         }
     }
     
@@ -67,32 +67,27 @@ static TestClientMainWindowController *sharedInstance = nil;
 #pragma mark -
 
 - (void)sendRequest: (id)sender {
-	NSURL *URL = [NSURL URLWithString: [myRequestURL stringValue]];	
-	XMLRPCRequest *request = [[[XMLRPCRequest alloc] initWithURL: URL] autorelease];
-	NSString *connectionIdentifier;
+	NSURL *URL = [NSURL URLWithString: [myRequestURL stringValue]];
+    XMLRPCClient* client = [[XMLRPCClient alloc] initWithURL: URL];
+    client.delegate = self;
+
+    XMLRPCRequest* request = [XMLRPCRequest new];
     
     [request setMethod: [myMethod stringValue] withParameter: [myParameter stringValue]];
     
 	[myProgressIndicator startAnimation: self];
 	
     [myRequestBody setString: [request body]];
-    
-	connectionIdentifier = [[XMLRPCConnectionManager sharedManager] spawnConnectionWithXMLRPCRequest: request delegate: self];
+
+    [client startRequest:request completion:^(XMLRPCResponse* response) {} error:^(NSError* err) {}];
     
     [myActiveConnection setHidden: NO];
-    
-    [myActiveConnection setStringValue: [NSString stringWithFormat: @"Active Connection: %@", connectionIdentifier]];
     
     [mySendRequest setEnabled: NO];
 }
 
 #pragma mark -
 
-- (void)dealloc {
-    [myResponse release];
-    
-    [super dealloc];
-}
 
 #pragma mark -
 
@@ -147,7 +142,7 @@ static TestClientMainWindowController *sharedInstance = nil;
         if ([parentObject isKindOfClass: [NSDictionary class]]) {
             return [[parentObject allKeysForObject: item] objectAtIndex: 0];
         } else if ([parentObject isKindOfClass: [NSArray class]]) {
-            return [NSString stringWithFormat: @"Item %d", [parentObject indexOfObject: item]];
+            return [NSString stringWithFormat: @"Item %lu", (unsigned long)[parentObject indexOfObject: item]];
         } else if ([item isKindOfClass: [NSString class]]) {
             return @"String";
         } else {
@@ -155,7 +150,7 @@ static TestClientMainWindowController *sharedInstance = nil;
         }
     } else {
         if ([item isKindOfClass: [NSDictionary class]] || [item isKindOfClass: [NSArray class]]) {
-            return [NSString stringWithFormat: @"%d items", [item count]];
+            return [NSString stringWithFormat: @"%lu items", (unsigned long)[item count]];
         } else {
             return item;
         }
@@ -178,7 +173,7 @@ static TestClientMainWindowController *sharedInstance = nil;
     [mySendRequest setEnabled: YES];
 	
 	if ([response isFault]) {
-        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+        NSAlert *alert = [[NSAlert alloc] init];
         
         [alert addButtonWithTitle: @"OK"];
         [alert setMessageText: @"The XML-RPC response returned a fault."];
@@ -187,9 +182,7 @@ static TestClientMainWindowController *sharedInstance = nil;
         
         [alert runModal];
     } else {
-        [response retain];
         
-        [myResponse release];
         
         myResponse = response;
     }
@@ -200,7 +193,7 @@ static TestClientMainWindowController *sharedInstance = nil;
 }
 
 - (void)request: (XMLRPCRequest *)request didFailWithError: (NSError *)error {
-	NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+	NSAlert *alert = [[NSAlert alloc] init];
 	
     [[NSApplication sharedApplication] requestUserAttention: NSCriticalRequest];
     

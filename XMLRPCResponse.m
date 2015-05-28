@@ -1,6 +1,13 @@
 #import "XMLRPCResponse.h"
 #import "XMLRPCEventBasedParser.h"
 
+@interface XMLRPCResponse () {
+    NSString *myBody;
+    id myObject;
+    BOOL isFault;
+}
+@end
+
 @implementation XMLRPCResponse
 
 - (id)initWithData: (NSData *)data {

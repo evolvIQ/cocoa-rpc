@@ -1,6 +1,6 @@
 #import <Cocoa/Cocoa.h>
 
-@interface TestClientMainWindowController : NSWindowController<XMLRPCConnectionDelegate> {
+@interface TestClientMainWindowController : NSWindowController<XMLRPCClientDelegate> {
     XMLRPCResponse *myResponse;
     IBOutlet NSTextField *myRequestURL;
 	IBOutlet NSTextField *myMethod;

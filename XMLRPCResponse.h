@@ -2,32 +2,13 @@
 
 @class XMLRPCDecoder;
 
-@interface XMLRPCResponse : NSObject {
-    NSString *myBody;
-    id myObject;
-    BOOL isFault;
-}
+@interface XMLRPCResponse : NSObject 
 
 - (id)initWithData: (NSData *)data;
-
-#pragma mark -
-
 - (BOOL)isFault;
-
 - (NSNumber *)faultCode;
-
 - (NSString *)faultString;
-
-#pragma mark -
-
 - (id)object;
-
-#pragma mark -
-
 - (NSString *)body;
-
-#pragma mark -
-
-- (NSString *)description;
-
+@property (nonatomic, retain) id userObject;
 @end

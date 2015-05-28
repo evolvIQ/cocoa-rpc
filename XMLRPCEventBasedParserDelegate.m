@@ -1,6 +1,16 @@
 #import "XMLRPCEventBasedParserDelegate.h"
 #import "NSData+Base64.h"
 
+
+@interface XMLRPCEventBasedParserDelegate () {
+    XMLRPCEventBasedParserDelegate * __unsafe_unretained myParent;
+    NSMutableSet *myChildren;
+    XMLRPCElementType myElementType;
+    NSString *myElementKey;
+    id myElementValue;
+}
+@end
+
 @interface XMLRPCEventBasedParserDelegate (XMLRPCEventBasedParserDelegatePrivate)
 
 - (BOOL)isDictionaryElementType: (XMLRPCElementType)elementType;

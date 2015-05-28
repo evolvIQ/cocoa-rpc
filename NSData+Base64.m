@@ -303,9 +303,6 @@ char *NewBase64Encode(
 	NSString *result =[[NSString alloc] initWithBytes:outputBuffer
 											   length:outputLength
 											 encoding:NSASCIIStringEncoding];
-#if ! __has_feature(objc_arc)
-	[result autorelease];
-#endif
 	free(outputBuffer);
 	return result;
 }

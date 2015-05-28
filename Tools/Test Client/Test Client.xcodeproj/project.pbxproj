@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,18 +13,35 @@
 		070043131144667B000D05B6 /* TestClientApplicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0700430E1144667B000D05B6 /* TestClientApplicationController.m */; };
 		070043141144667B000D05B6 /* TestClientMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 070043101144667B000D05B6 /* TestClientMainWindowController.m */; };
 		070043151144667B000D05B6 /* TestClientXMLParserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 070043121144667B000D05B6 /* TestClientXMLParserWindowController.m */; };
-		07E6DAB013679C6E00454D31 /* XMLRPC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E6DAA513679B7600454D31 /* XMLRPC.framework */; };
-		07E6DAB213679F3000454D31 /* XMLRPC.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 07E6DAA513679B7600454D31 /* XMLRPC.framework */; };
 		2DC70E311004D90100BBEEA6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E2F1004D90100BBEEA6 /* InfoPlist.strings */; };
-		2DC70E381004D90F00BBEEA6 /* Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E321004D90F00BBEEA6 /* Common.xcconfig */; };
-		2DC70E391004D90F00BBEEA6 /* CommonDevelopment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E331004D90F00BBEEA6 /* CommonDevelopment.xcconfig */; };
-		2DC70E3A1004D90F00BBEEA6 /* CommonRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E341004D90F00BBEEA6 /* CommonRelease.xcconfig */; };
-		2DC70E3B1004D90F00BBEEA6 /* TestClientDevelopment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E351004D90F00BBEEA6 /* TestClientDevelopment.xcconfig */; };
-		2DC70E3C1004D90F00BBEEA6 /* TestClientRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E361004D90F00BBEEA6 /* TestClientRelease.xcconfig */; };
-		2DC70E3D1004D90F00BBEEA6 /* TestClient.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E371004D90F00BBEEA6 /* TestClient.xcconfig */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		FFFCF9BF1B17A6EA00418EC9 /* XMLRPC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFFCF9B61B17A6A300418EC9 /* XMLRPC.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FFFCF9B51B17A6A300418EC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFCF9AF1B17A6A300418EC9 /* XMLRPC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = XMLRPC;
+		};
+		FFFCF9B71B17A6A300418EC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFCF9AF1B17A6A300418EC9 /* XMLRPC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 903B0DB612F7574800BD6E09;
+			remoteInfo = libXMLRPC;
+		};
+		FFFCF9B91B17A6A300418EC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFCF9AF1B17A6A300418EC9 /* XMLRPC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0799AF030F6721FF00B71B22;
+			remoteInfo = XMLRPCUnitTests;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		07E6DAB113679F1400454D31 /* Copy Frameworks */ = {
@@ -33,7 +50,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				07E6DAB213679F3000454D31 /* XMLRPC.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,6 +84,7 @@
 		32CA4F630368D1EE00C91783 /* TestClient.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClient.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* TestClient-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TestClient-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Test Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Test Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFFCF9AF1B17A6A300418EC9 /* XMLRPC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = XMLRPC.xcodeproj; path = ../../XMLRPC.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,8 +92,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFFCF9BF1B17A6EA00418EC9 /* XMLRPC.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				07E6DAB013679C6E00454D31 /* XMLRPC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +152,7 @@
 		29B97314FDCFA39411CA2CEA /* Test Client */ = {
 			isa = PBXGroup;
 			children = (
+				FFFCF9AF1B17A6A300418EC9 /* XMLRPC.xcodeproj */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				0759A75B11434CC8000DFE98 /* Private Headers */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -213,6 +231,16 @@
 			name = "Property Lists";
 			sourceTree = "<group>";
 		};
+		FFFCF9B01B17A6A300418EC9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFCF9B61B17A6A300418EC9 /* XMLRPC.framework */,
+				FFFCF9B81B17A6A300418EC9 /* libXMLRPC.a */,
+				FFFCF9BA1B17A6A300418EC9 /* XMLRPCUnitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -241,8 +269,11 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Test Client" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -250,6 +281,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Test Client */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FFFCF9B01B17A6A300418EC9 /* Products */;
+					ProjectRef = FFFCF9AF1B17A6A300418EC9 /* XMLRPC.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Test Client */,
@@ -257,20 +294,38 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		FFFCF9B61B17A6A300418EC9 /* XMLRPC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = XMLRPC.framework;
+			remoteRef = FFFCF9B51B17A6A300418EC9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFCF9B81B17A6A300418EC9 /* libXMLRPC.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libXMLRPC.a;
+			remoteRef = FFFCF9B71B17A6A300418EC9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFCF9BA1B17A6A300418EC9 /* XMLRPCUnitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = XMLRPCUnitTests.xctest;
+			remoteRef = FFFCF9B91B17A6A300418EC9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		8D1107290486CEB800E47090 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DC70E381004D90F00BBEEA6 /* Common.xcconfig in Resources */,
-				2DC70E391004D90F00BBEEA6 /* CommonDevelopment.xcconfig in Resources */,
-				2DC70E3A1004D90F00BBEEA6 /* CommonRelease.xcconfig in Resources */,
 				2DC70E311004D90100BBEEA6 /* InfoPlist.strings in Resources */,
-				2DC70E3D1004D90F00BBEEA6 /* TestClient.xcconfig in Resources */,
 				070043021144653D000D05B6 /* TestClient.xib in Resources */,
-				2DC70E3B1004D90F00BBEEA6 /* TestClientDevelopment.xcconfig in Resources */,
 				0700430C11446593000D05B6 /* TestClientMainWindow.xib in Resources */,
-				2DC70E3C1004D90F00BBEEA6 /* TestClientRelease.xcconfig in Resources */,
 				070043051144656D000D05B6 /* TestClientXMLParserWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -348,6 +403,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2DC70E351004D90F00BBEEA6 /* TestClientDevelopment.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "TestClient-Info.plist";
 			};
 			name = Development;
@@ -356,6 +413,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2DC70E361004D90F00BBEEA6 /* TestClientRelease.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "TestClient-Info.plist";
 			};
 			name = Release;

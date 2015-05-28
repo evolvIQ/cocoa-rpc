@@ -40,7 +40,7 @@ static TestClientXMLParserWindowController *sharedInstance = nil;
 + (TestClientXMLParserWindowController *)sharedController {
     @synchronized(self) {
         if (!sharedInstance) {
-            [[self alloc] init];
+            sharedInstance = [[self alloc] init];
         }
     }
     
@@ -80,7 +80,7 @@ static TestClientXMLParserWindowController *sharedInstance = nil;
     XMLRPCEventBasedParser *parser = (XMLRPCEventBasedParser *)[[XMLRPCEventBasedParser alloc] initWithData: data];
     
     if (!parser) {
-        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+        NSAlert *alert = [[NSAlert alloc] init];
         
         [alert addButtonWithTitle: @"OK"];
         [alert setMessageText: @"The parser encountered an error."];
@@ -92,16 +92,14 @@ static TestClientXMLParserWindowController *sharedInstance = nil;
         return;
     }
     
-    [myParsedObject release];
     
-    myParsedObject = [[parser parse] retain];
+    myParsedObject = [parser parse];
     
-    NSError *parserError = [[[parser parserError] retain] autorelease];
+    NSError *parserError = [parser parserError];
     
-    [parser release];
     
     if (!myParsedObject) {
-        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+        NSAlert *alert = [[NSAlert alloc] init];
         
         [alert addButtonWithTitle: @"OK"];
         [alert setMessageText: @"The parser encountered an error."];
@@ -169,13 +167,13 @@ static TestClientXMLParserWindowController *sharedInstance = nil;
         if ([parentObject isKindOfClass: [NSDictionary class]]) {
             return [NSString stringWithFormat: @"\"%@\", %@", [[parentObject allKeysForObject: item] objectAtIndex: 0], [self typeForItem: item]];
         } else if ([parentObject isKindOfClass: [NSArray class]]) {
-            return [NSString stringWithFormat: @"Item %d, %@", [parentObject indexOfObject: item], [self typeForItem: item]];
+            return [NSString stringWithFormat: @"Item %lu, %@", (unsigned long)[parentObject indexOfObject: item], [self typeForItem: item]];
         } else {
             return [self typeForItem: item];
         }
     } else {
         if ([item isKindOfClass: [NSDictionary class]] || [item isKindOfClass: [NSArray class]]) {
-            return [NSString stringWithFormat: @"%d items", [item count]];
+            return [NSString stringWithFormat: @"%lu items", (unsigned long)[item count]];
         } else {
             return [NSString stringWithFormat: @"\"%@\"", item];
         }

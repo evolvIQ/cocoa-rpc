@@ -2,39 +2,15 @@
 
 #import "XMLRPCEncoder.h"
 
-@interface XMLRPCRequest : NSObject {
-    NSMutableURLRequest *myRequest;
-    id<XMLRPCEncoder> myXMLEncoder;
-    NSTimeInterval myTimeout;
-    
-    id extra;
-}
+@interface XMLRPCRequest : NSObject 
 
-- (id)initWithURL: (NSURL *)URL;
+- (id)initWithEncoder: (id<XMLRPCEncoder>)encoder;
 
 #pragma mark -
-
-- (void)setURL: (NSURL *)URL;
-
-- (NSURL *)URL;
-
-#pragma mark -
-
-- (void)setUserAgent: (NSString *)userAgent;
-
-- (NSString *)userAgent;
-
-#pragma mark -
-
-- (void)setEncoder: (id<XMLRPCEncoder>) encoder;
 
 - (void)setMethod: (NSString *)method;
-
 - (void)setMethod: (NSString *)method withParameter: (id)parameter;
-
 - (void)setMethod: (NSString *)method withParameters: (NSArray *)parameters;
-
-- (void)setTimeoutInterval: (NSTimeInterval)timeout;
 
 #pragma mark -
 
@@ -42,23 +18,14 @@
 
 - (NSArray *)parameters;
 
-- (NSTimeInterval)timeout;
+@property NSTimeInterval timeout;
+
+@property (nonatomic, retain) id userObject;
 
 #pragma mark -
 
 - (NSString *)body;
 
-#pragma mark -
-
-- (NSURLRequest *)request;
-
-#pragma mark -
-
-- (void)setValue: (NSString *)value forHTTPHeaderField: (NSString *)header;
-
-#pragma mark -
-    
-- (id) extra;
-- (void) setExtra:(id) extraObject;
+- (NSString *)mimeType;
 
 @end

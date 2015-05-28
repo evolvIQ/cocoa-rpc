@@ -2,26 +2,17 @@
 
 @class XMLRPCConnection, XMLRPCRequest, XMLRPCResponse;
 
-@protocol XMLRPCConnectionDelegate<NSObject>
-
-@required
-- (void)request: (XMLRPCRequest *)request didReceiveResponse: (XMLRPCResponse *)response;
-
+@protocol XMLRPCClientDelegate <NSObject>
 @optional
+- (void)request: (XMLRPCRequest *)request didReceiveResponse: (XMLRPCResponse *)response;
+- (void)request: (XMLRPCRequest *)request didFailWithError: (NSError *)error;
 - (void)request: (XMLRPCRequest *)request didSendBodyData: (float)percent;
 
-@required
-- (void)request: (XMLRPCRequest *)request didFailWithError: (NSError *)error;
+#pragma mark - Authentication
 
-#pragma mark -
-
-@required
+@optional
 - (BOOL)request: (XMLRPCRequest *)request canAuthenticateAgainstProtectionSpace: (NSURLProtectionSpace *)protectionSpace;
-
-@required
 - (void)request: (XMLRPCRequest *)request didReceiveAuthenticationChallenge: (NSURLAuthenticationChallenge *)challenge;
-
-@required
 - (void)request: (XMLRPCRequest *)request didCancelAuthenticationChallenge: (NSURLAuthenticationChallenge *)challenge;
 
 @end
